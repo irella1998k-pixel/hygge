@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<title>Hygge mit Vika</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column like a quiet autumn notebook; texts open in their own sheet so tasks stay in view. */
+:root{
+  --bg:#F3ECE2; --surface:#FBF7F1; --ink:#2F2620; --muted:#6E6157; --line:#E2D6C6;
+  --accent:#A35A2A; --accent-ink:#FFF8F0; --moss:#5E6B3A; --slate:#5F7486; --soft:#EFE5D8;
+  --display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1D1814; --surface:#28211B; --ink:#EFE6DA; --muted:#B4A696; --line:#3C3229;
+  --accent:#D88A52; --accent-ink:#1D1814; --moss:#A6B27C; --slate:#93A7B8; --soft:#30281F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1D1814; --surface:#28211B; --ink:#EFE6DA; --muted:#B4A696; --line:#3C3229;
+  --accent:#D88A52; --accent-ink:#1D1814; --moss:#A6B27C; --slate:#93A7B8; --soft:#30281F; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:0 64px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+body.lock{overflow:hidden}
+.wrap{max-width:720px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:2.2rem}
+p{margin:0}
+img{max-width:100%;display:block}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.steps{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin:0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)));padding:10px max(16px, env(safe-area-inset-left, 0px))}
+.steps nav{display:flex;gap:6px;overflow-x:auto;max-width:720px;margin:0 auto;scrollbar-width:none}
+.steps a{flex:none;text-decoration:none;color:var(--muted);font-size:.85rem;padding:4px 10px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+.steps a.done{color:var(--moss);border-color:var(--moss)}
+
+.hero{padding:48px 0 24px;display:grid;gap:18px}
+.word{font-family:var(--display);font-size:clamp(4rem,16vw,7rem);line-height:.9}
+.lang{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border-bottom:2px dotted var(--muted);padding-bottom:6px;max-width:26rem}
+.def{font-size:1.25rem;max-width:26rem}
+.meta{color:var(--muted);font-size:.92rem;max-width:34rem}
+
+section.step{padding-top:44px;display:grid;gap:16px;scroll-margin-top:60px}
+.kicker{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.task{background:var(--surface);border:1px solid var(--line);padding:16px 18px;border-radius:6px;display:grid;gap:12px;min-width:0}
+.task > p:first-child{font-weight:500}
+.hint{color:var(--muted);font-size:.92rem}
+.sub{font-weight:600;margin-top:4px}
+
+textarea,input[type=text],select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;line-height:1.5}
+textarea{min-height:5.5em;resize:vertical}
+textarea:focus,input:focus,select:focus{border-color:var(--accent);outline:none}
+select{width:auto;padding:4px 8px}
+
+.btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:7px 14px;border-radius:999px;cursor:pointer;font-size:.92rem;font-weight:500}
+.btn.solid{background:var(--accent);color:var(--accent-ink)}
+.btn.sm{font-size:.8rem;padding:3px 10px}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.reveal{background:var(--soft);border-left:3px solid var(--moss);padding:10px 14px;border-radius:0 6px 6px 0}
+
+figure{margin:0}
+.photo{border-radius:4px;overflow:hidden}
+.photo img{width:100%;height:auto}
+.photo.wide img{aspect-ratio:16/10;object-fit:cover}
+.photo.tall{max-width:420px}
+
+.it{display:grid;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.9rem;text-align:left}
+.opts.stack{flex-direction:column;align-items:stretch}
+.opts.stack button{border-radius:8px;padding:8px 12px}
+.opts button[aria-pressed=true]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.mark{font-size:.9rem;color:var(--muted)}
+.mark.ok{color:var(--moss)}
+.quote{font-style:italic}
+.before{font-size:.85rem;color:var(--muted)}
+
+.preview{display:grid;gap:10px}
+.preview div{border-left:3px solid var(--line);padding-left:12px}
+.preview b{font-family:var(--display);font-weight:400;font-size:1.35rem;display:block;line-height:1.2}
+.gloss{display:grid;gap:10px;margin:0}
+.gloss dt{font-family:var(--display);font-size:1.4rem;line-height:1.1}
+.gloss dd{margin:0;color:var(--muted)}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;min-width:3.2em}
+
+.gap .s{line-height:2.2}
+.gap input{width:8.5em;display:inline-block;padding:2px 8px;margin:0 2px}
+
+.pz{display:grid;gap:8px}
+.pz .line{min-height:2.6em;border:1px dashed var(--line);border-radius:8px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pz .line:empty::before{content:"Tipp unten auf die Teile";color:var(--muted);font-size:.85rem;padding-left:6px}
+.pz .pool{display:flex;flex-wrap:wrap;gap:6px}
+.tok{border:1px solid var(--line);background:var(--soft);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.95rem}
+.line .tok{background:var(--surface);border-color:var(--accent)}
+
+/* reading sheet */
+.sheet{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;
+  padding:calc(env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+.sheet-bar{position:sticky;top:0;background:var(--bg);display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);z-index:1}
+.tabs{display:flex}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:6px 12px;cursor:pointer;color:var(--muted);font-weight:500}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--accent)}
+article{display:grid;gap:14px;max-width:65ch;margin:20px auto 0}
+article h3{font-size:1.4rem;margin-top:.6rem}
+article .lead{font-family:var(--display);font-size:1.9rem;line-height:1.1}
+article .byline{color:var(--muted);font-style:italic;font-size:.95rem;margin-top:-6px}
+article ol,article ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
+.pn{display:grid;grid-template-columns:2em 1fr;gap:4px}
+.pn span{font-family:var(--display);font-size:1.3rem;color:var(--accent);line-height:1.2}
+.closed{font-size:.9rem;color:var(--muted);font-style:italic}
+
+.chat{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.chat-head{display:flex;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.ava{width:38px;height:38px;border-radius:50%;background:var(--slate);color:var(--surface);display:grid;place-items:center;font-family:var(--display);font-size:1.3rem}
+.chat-head small{display:block;color:var(--muted);font-size:.8rem;line-height:1.2}
+.chat-body{padding:16px;display:grid;gap:10px}
+.bub{max-width:85%;padding:9px 13px;border-radius:14px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.bub.lena{background:var(--soft);border-bottom-left-radius:4px;justify-self:start}
+.bub.me{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;justify-self:end}
+.bub img{border-radius:8px;margin-top:8px;max-width:220px}
+.chat-tools{display:grid;gap:8px;padding:0 16px 16px}
+.help{font-size:.92rem;background:var(--soft);padding:8px 12px;border-radius:6px;white-space:pre-line}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.checklist{margin:0;padding-left:1.2em}
+.out{min-height:10em;font-size:.9rem}
+.toast{color:var(--moss);font-size:.92rem}
+.score{display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-variant-numeric:tabular-nums}
+footer{margin-top:56px;color:var(--muted);font-size:.85rem;display:grid;gap:8px}
+</style>
+</head>
+<body>
+
+<div class="steps"><nav id="nav" aria-label="Schritte"></nav></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="word">Hyggelig</div>
+  <div class="lang">Dänisch</div>
+  <p class="def">Ein Gefühl von Gemütlichkeit und Zufriedenheit.</p>
+  <p class="meta">Hausaufgabe, ca. 60 Minuten. Deine Antworten bleiben in diesem Browser gespeichert, du kannst also Pause machen. Am Ende gibst du alles ab und siehst die Lösungen. Deinen Kommentar schickst du zur Korrektur.</p>
+</header>
+
+<section class="step" id="thesen" data-title="Was denkst du?">
+  <div class="kicker">Vor dem Lesen</div>
+  <h2>Was denkst du?</h2>
+  <figure class="photo tall"><img src="img/collage.jpg" alt="Herbstcollage: Kerzen, Äpfel, Kakao, Zimtschnecken, Handschuhe, eine Frau beim Spaziergang im Wald, Stricken, Puzzle"></figure>
+  <div class="task">
+    <p>Lies die Sätze. Stimmst du zu? Hier gibt es kein Richtig oder Falsch.</p>
+    <div id="p1"></div>
+  </div>
+</section>
+
+<section class="step" id="autoren" data-title="Zwei Texte">
+  <div class="kicker">Vor dem Lesen</div>
+  <h2>Zwei Texte, zwei Autoren</h2>
+  <div class="task">
+    <p>Lies nur die Überschriften und den ersten Satz.</p>
+    <div class="preview">
+      <div><span class="hint">Text A</span><b>Hygge – so wird dein Herbst gemütlicher</b>Wenn die Tage kürzer werden und es draußen schon am Nachmittag dunkel wird, fühlen sich viele Menschen müde und schlecht gelaunt.</div>
+      <div><span class="hint">Text B</span><b>Was Hygge für mich wirklich bedeutet</b>Als ich nach Dänemark gezogen bin, dachte ich, Hygge bedeutet Kuschelsocken, Kerzen und ein Wohnzimmer wie aus dem Möbelkatalog.</div>
+    </div>
+    <div id="p2"></div>
+  </div>
+  <div class="task">
+    <p>Drei Wörter, bevor du liest</p>
+    <dl class="gloss">
+      <div><dt>geborgen</dt><dd>sicher und warm, wie zu Hause</dd></div>
+      <div><dt>der Rückzugsort</dt><dd>ein Ort, an dem man Ruhe hat</dd></div>
+      <div><dt>es kostet Überwindung</dt><dd>man muss sich zwingen, etwas Unangenehmes oder Neues zu tun</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="step" id="lesen" data-title="Lesen">
+  <div class="kicker">Lesen 1</div>
+  <h2>Worum geht es?</h2>
+  <div class="task">
+    <p>Lies beide Texte schnell, ca. 4 Minuten. Du musst nicht jedes Wort verstehen. Danach beantwortest du die Fragen.</p>
+    <div class="row"><button class="btn solid open-text">Texte öffnen</button><button class="btn" id="timerBtn">Timer: 4 Minuten</button><span class="timer" id="timerOut" aria-live="polite"></span></div>
+  </div>
+  <div class="task">
+    <p>Welcher Satz fasst den Text am besten zusammen?</p>
+    <div id="w1a"></div>
+  </div>
+  <div class="task">
+    <p>Text B: Welcher Absatz passt? Eine Beschreibung passt zu keinem Absatz.</p>
+    <div id="w1b"></div>
+  </div>
+</section>
+
+<section class="step" id="details" data-title="Genau lesen">
+  <div class="kicker">Lesen 2</div>
+  <h2>Genau gelesen</h2>
+  <div class="task">
+    <p>Lies jetzt genauer. Richtig, falsch oder steht nicht im Text? Wähle dann den Satz, der es zeigt.</p>
+    <div class="row"><button class="btn sm open-text">Texte öffnen</button></div>
+    <div id="w2"></div>
+  </div>
+</section>
+
+<section class="step" id="zeilen" data-title="Zwischen den Zeilen">
+  <div class="kicker">Lesen 3</div>
+  <h2>Zwischen den Zeilen</h2>
+  <div class="task">
+    <p>Steht das im Text, folgt es aus dem Text, oder ist es nur eine Vermutung?</p>
+    <div class="row"><button class="btn sm open-text">Texte öffnen</button></div>
+    <div id="w3a"></div>
+  </div>
+  <div class="task">
+    <p>Worauf bezieht sich das markierte Wort?</p>
+    <div id="w3b"></div>
+  </div>
+</section>
+
+<section class="step" id="danach" data-title="Und jetzt?">
+  <div class="kicker">Nach dem Lesen</div>
+  <h2>Und jetzt?</h2>
+  <div class="task">
+    <p>Was sagen die Texte zu deinen Sätzen vom Anfang? Hat sich deine Meinung geändert?</p>
+    <div id="n1"></div>
+  </div>
+</section>
+
+<section class="step" id="ohnetext" data-title="Ohne Text">
+  <div class="kicker">Nach dem Lesen</div>
+  <h2>Ohne Text</h2>
+  <div class="task">
+    <p>Ergänze die Sätze aus den Texten. Schau dabei nicht in die Texte.</p>
+    <div class="row" id="closeRow"><button class="btn solid" id="closeBtn">Texte schließen und anfangen</button></div>
+    <p class="closed" id="closedNote" hidden>Die Texte sind geschlossen. Nach dem Abgeben kannst du sie wieder öffnen.</p>
+    <div id="n2" hidden></div>
+  </div>
+</section>
+
+<section class="step" id="satzbau" data-title="Sätze bauen">
+  <div class="kicker">Nach dem Lesen</div>
+  <h2>Sätze bauen</h2>
+  <div class="task">
+    <p>Tipp die Teile in der richtigen Reihenfolge an. Ein Teil zurück: einfach noch einmal antippen.</p>
+    <div id="n3"></div>
+  </div>
+</section>
+
+<section class="step" id="chat" data-title="Chat mit Lena">
+  <div class="kicker">Nach dem Lesen</div>
+  <h2>Lena schreibt dir</h2>
+  <p class="hint">Lena kennst du aus der Krabbelgruppe. Sie hat auch über Hygge gelesen. Antworte ihr. Wenn du nicht weiterweißt, tipp auf „Hilfe“. Nach jeder Antwort kannst du sie mit einem Beispiel vergleichen.</p>
+  <div class="chat">
+    <div class="chat-head"><div class="ava" aria-hidden="true">L</div><div><b>Lena</b><small>Krabbelgruppe</small></div></div>
+    <div class="chat-body" id="chatBody" aria-live="polite"></div>
+    <div class="chat-tools" id="chatTools"></div>
+  </div>
+</section>
+
+<section class="step" id="kommentar" data-title="Schreiben">
+  <div class="kicker">Schreiben</div>
+  <h2>Ein Kommentar für Mia</h2>
+  <figure class="photo wide"><img src="img/buecher_kopfhoerer.jpg" alt="Bücher und Kopfhörer in einer Stofftasche"></figure>
+  <div class="task">
+    <p>Mia schreibt am Ende: „Und was bedeutet Hygge für dich?“ Schreib ihr einen Kommentar (80–100 Wörter) zu diesen drei Punkten:</p>
+    <ul class="checklist">
+      <li>Was bedeutet Hygge für dich?</li>
+      <li>Wie ist das in Berlin im Vergleich zu Dänemark oder zu deiner Heimat?</li>
+      <li>Was würdest du anderen Eltern raten?</li>
+    </ul>
+    <textarea id="kommentar_txt" data-save style="min-height:12em" aria-label="Dein Kommentar"></textarea>
+    <div class="row"><span class="count" id="wc">0 Wörter</span><button class="btn" id="checkCom">Fertig? Kurz prüfen</button></div>
+    <div class="reveal" id="comCheck" hidden>
+      <ul class="checklist">
+        <li>Hast du zu allen drei Punkten etwas geschrieben?</li>
+        <li>Hast du Mia begrüßt und dich am Ende verabschiedet?</li>
+        <li>Lies deine langen Sätze noch einmal: Steht jedes Verb an der richtigen Stelle?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="step" id="abgeben" data-title="Abgeben">
+  <div class="kicker">Fertig</div>
+  <h2>Antworten abgeben</h2>
+  <figure class="photo wide"><img src="img/kuchen.jpg" alt="Gitterkuchen mit Kirschfüllung"></figure>
+  <div class="task">
+    <p>Wenn du fertig bist, gib deine Antworten ab. Danach siehst du bei jeder Aufgabe die Lösung.</p>
+    <div class="row"><button class="btn solid" id="submitBtn">Antworten abgeben</button></div>
+    <div class="reveal" id="results" hidden></div>
+  </div>
+  <div class="task">
+    <p>Deinen Kommentar an Mia schickst du zur Korrektur.</p>
+    <div class="row"><button class="btn" id="copyBtn">Kommentar kopieren</button><span class="toast" id="toast" role="status"></span></div>
+    <textarea id="output" class="out" readonly aria-label="Dein Kommentar" hidden></textarea>
+  </div>
+</section>
+
+<footer>
+  <p>Fotos: Pinterest-Moodboard, nur für den Unterricht.</p>
+  <div class="row"><button class="btn" id="resetBtn">Alle Antworten löschen</button><span id="resetConfirm" hidden>Wirklich alles löschen? <button class="btn solid" id="resetYes">Ja, löschen</button> <button class="btn" id="resetNo">Nein</button></span></div>
+</footer>
+</div>
+
+<!-- reading sheet -->
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Texte">
+  <div class="sheet-bar">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tabA" aria-selected="true" aria-controls="textA">Text A</button>
+      <button role="tab" id="tabB" aria-selected="false" aria-controls="textB">Text B</button>
+    </div>
+    <button class="btn" id="closeSheet">Schließen</button>
+  </div>
+
+  <article id="textA" role="tabpanel" aria-labelledby="tabA">
+    <p class="lead">Hygge – so wird dein Herbst gemütlicher</p>
+    <figure class="photo wide"><img src="img/fenster.jpg" alt="Blick durch ein altes Holzfenster auf einen Herbstgarten"></figure>
+    <p>Wenn die Tage kürzer werden und es draußen schon am Nachmittag dunkel wird, fühlen sich viele Menschen müde und schlecht gelaunt. Am liebsten würden sie bis zum Frühling unter der Bettdecke bleiben. In Dänemark ist das anders: Obwohl die Winter dort noch länger und dunkler sind als in Deutschland, gehören die Dänen regelmäßig zu den glücklichsten Menschen der Welt. Im „World Happiness Report“ landet Dänemark jedes Jahr weit oben, oft zusammen mit Finnland, Norwegen und Schweden. Ihr Geheimnis hat einen Namen: Hygge (gesprochen: „hügge“).</p>
+    <h3>Was bedeutet Hygge?</h3>
+    <p>Eine genaue Übersetzung gibt es nicht. Am nächsten kommt das deutsche Wort „Gemütlichkeit“, aber Hygge ist mehr als ein bequemes Sofa. Hyggelig ist alles, wobei man sich wohl und geborgen fühlt: ein Abend mit Freunden, warmes Kerzenlicht, gutes Essen und lange Gespräche, bei denen niemand auf die Uhr schaut. Für die Dänen ist Hygge die beste Antwort auf die kalte und dunkle Jahreszeit.</p>
+    <p>Hygge gibt es allerdings nicht nur im Winter. Im Sommer kann ein Picknick am See, eine Fahrradtour oder ein Abend am Lagerfeuer genauso hyggelig sein. Das Wichtigste ist: Du brauchst eigentlich nur dich selbst und ein bisschen Zeit.</p>
+    <h3>So machst du es dir hyggelig</h3>
+    <ol>
+      <li><b>Licht:</b> Kein anderes Element ist für Hygge so wichtig wie das Licht. Statt einer hellen Deckenlampe sorgen mehrere kleine Lichtquellen für eine wärmere Atmosphäre. Am schönsten sind natürlich Kerzen oder ein Kaminfeuer.</li>
+      <li><b>Dein Zuhause:</b> Deine Wohnung sollte ein Rückzugsort sein, an dem du dich vom Alltag erholen kannst. Mit Decken, Kissen, einem weichen Teppich und ein paar Pflanzen wird sie sofort gemütlicher.</li>
+      <li><b>Achtsamkeit:</b> Konzentriere dich auf den Moment und sei dankbar für die schönen Dinge in deinem Leben, allein oder mit Menschen, die dir wichtig sind.</li>
+      <li><b>Gemeinsam essen:</b> Lade Freunde zum Kochen ein oder backe mit deinen Kindern Zimtschnecken. Wenn es danach in der ganzen Wohnung nach Zimt riecht, ist Hygge garantiert.</li>
+      <li><b>Entspannen:</b> Tu dir selbst etwas Gutes: Kuschel dich in eine Decke, trink einen Tee und schau einfach aus dem Fenster. Wichtig: Über Politik und andere ernste Themen spricht man in hyggeligen Stunden nicht.</li>
+    </ol>
+    <figure class="photo wide"><img src="img/teig.jpg" alt="Hände kneten Teig auf einem bemehlten Holztisch"></figure>
+    <h3>Unsere Buchtipps</h3>
+    <figure class="photo wide"><img src="img/buecher.jpg" alt="Vier Hygge-Bücher auf einem weißen Holztisch"></figure>
+    <ul>
+      <li><b>„Hygge – Ein Lebensgefühl, das einfach glücklich macht“</b> von Meik Wiking. Der Autor leitet in Kopenhagen ein Institut für Glücksforschung und erklärt, warum Hygge glücklich macht. Für viele ist es das bekannteste Buch zum Thema.</li>
+      <li><b>„Hygge – Die dänische Art, glücklich zu leben“</b> von Louisa Thomsen Brits. Die Autorin ist halb Dänin. Sie beschreibt, wie die Dänen seit Jahrhunderten das Glück in ihren Alltag einbauen.</li>
+      <li><b>„Hygge – Das große Glück liegt in den kleinen Dingen“</b> von Marie Tourell Søderberg. Die Autorin hat Rezepte, Playlists und Einrichtungsideen von Dänen gesammelt.</li>
+      <li><b>„Mach’s dir hygge“</b> von Nicole Zweig. Hier findest du Bastelanleitungen und Rezepte, mit denen du sofort loslegen kannst.</li>
+      <li><b>„Hygg Hygg Hurra! Glücklich wie die Dänen“</b> von Helen Russell. Die Journalistin erzählt, wie sie mit ihrem Mann von London aufs dänische Land gezogen ist und ein Jahr lang versucht hat, wie die Dänen zu leben.</li>
+    </ul>
+    <h3>Hygge überall</h3>
+    <p>Inzwischen ist Hygge ein weltweiter Trend. Eine amerikanische Zeitschrift erklärte 2016 sogar zum „Jahr des Hygge“. Heute gibt es Cafés, Shops, Möbel und sogar Kerzen mit dem Wort „Hygge“ im Namen.</p>
+    <p>Dabei geht es bei Hygge nicht um teure Dinge, sondern darum, das kleine Glück im Alltag zu schätzen und das Beste aus dem zu machen, was man hat. Verwechsle Hygge also nicht mit Shopping!</p>
+  </article>
+
+  <article id="textB" role="tabpanel" aria-labelledby="tabB" hidden>
+    <p class="lead">Was Hygge für mich wirklich bedeutet</p>
+    <p class="byline">Ein Blog von Mia, die zwei Jahre in Aarhus gelebt hat</p>
+    <figure class="photo wide"><img src="img/socken.jpg" alt="Füße in dicken grauen Wollsocken"></figure>
+    <div class="pn"><span>1</span><p>Als ich nach Dänemark gezogen bin, dachte ich, Hygge bedeutet Kuschelsocken, Kerzen und ein Wohnzimmer wie aus dem Möbelkatalog. So kennt man es ja von Instagram. Nach zwei Jahren in Aarhus weiß ich: Das kann Hygge sein, aber eigentlich ist es viel mehr, nämlich ein Lebensgefühl.</p></div>
+    <div class="pn"><span>2</span><p>Das Leben in Dänemark ist ruhiger als in Deutschland, zumindest habe ich es so erlebt. Die Leute gehen pünktlich nach Hause, und am Abend hat man wirklich Zeit für sich. Hygge heißt für mich, die kleinen Momente bewusst zu genießen: das Handy weglegen, mit der Familie frühstücken, im Herbst spazieren gehen, wenn das Laub unter den Schuhen raschelt. Man nimmt sich Zeit für die Menschen, die man mag. Dafür muss man kein Geld ausgeben.</p></div>
+    <div class="pn"><span>3</span><p>Ich habe meine dänischen Kollegen gefragt, was Hygge für sie ist. Die Antworten waren total unterschiedlich: Für den einen ist es ein Abend mit Freunden und Pizza, für die andere ein heißes Bad mit Musik und Kerzen. Ein Kollege fährt am Wochenende am liebsten mit seinem Campingbus ans Meer. Eine Kollegin mit zwei Kindern meinte sogar: „Für mich ist es hyggelig, wenn die Wohnung endlich aufgeräumt ist.“ Da musste ich lachen, aber ich verstehe sie gut.</p></div>
+    <figure class="photo wide"><img src="img/katze.jpg" alt="Schwarze Katze auf einem roten Orientteppich"></figure>
+    <div class="pn"><span>4</span><p>Die Einrichtung spielt natürlich eine Rolle, aber ein aufgeräumtes Zuhause ist oft hyggeliger als ein perfekt dekoriertes. Wenn du vom Sofa aus nur Chaos siehst, kannst du nicht abschalten. Außerdem sollte deine Wohnung persönlich sein, mit Fotos und Dingen aus deinem Leben, auch wenn sie nicht zum Farbkonzept passen. Eine Wohnung wie im Katalog sieht auf Fotos vielleicht schöner aus, aber sie fühlt sich nicht nach Zuhause an.</p></div>
+    <div class="pn"><span>5</span><p>Hygge hat viel mit Gemeinschaft zu tun. Aber Hygge geht auch allein. Deck dir den Tisch schön, nur für dich, oder geh allein ins Café und nimm ein Buch mit. Am Anfang kostet das vielleicht Überwindung, aber es lohnt sich.</p></div>
+    <figure class="photo wide"><img src="img/tee.jpg" alt="Tee wird aus einer Glaskanne in eine Tasse gegossen"></figure>
+    <div class="pn"><span>6</span><p>In Schweden gibt es übrigens ein ähnliches Wort: Fika. Das ist eigentlich eine Kaffeepause, aber eine besondere. Man trifft sich mit Freunden oder Kollegen, trinkt Kaffee, isst eine Zimtschnecke und nimmt sich dafür richtig Zeit. Fika ist konkreter als Hygge, denn es ist ein Ritual. Hygge ist dagegen ein ganzes Lebensgefühl.</p></div>
+    <figure class="photo wide"><img src="img/regen.jpg" alt="Regentropfen auf einer Autoscheibe, dahinter Lichter der Stadt"></figure>
+    <div class="pn"><span>7</span><p>Und bei uns? Ehrlich gesagt: Außerhalb von Dänemark ist es schwerer. Wenn alle um dich herum gestresst sind, in der Bahn, im Büro oder im Supermarkt, fällt Entspannung nicht leicht. Ich würde trotzdem nicht aufgeben. Du musst nicht dein ganzes Leben ändern. Versuch einfach, ein oder zwei Elemente in deinen Alltag einzubauen und dir jeden Tag einen kurzen Moment der Ruhe zu gönnen. Das reicht schon. Und was bedeutet Hygge für dich? Schreib es mir in die Kommentare!</p></div>
+  </article>
+</div>
+
+<script>
+(function(){
+const KEY='hygge-vika-v2';
+let S={};
+try{S=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){S={}}
+S.a=S.a||{};S.g=S.g||{};S.tips=S.tips||{};S.pz=S.pz||{};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}; updateNav()}
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=t=>String(t||'').toLowerCase().replace(/[.,!?„“"]/g,'').replace(/\s+/g,' ').trim();
+const SUB=()=>!!S.submitted;
+
+/* ===== data ===== */
+const THESEN=[
+ ['Für Hygge braucht man schöne Dinge wie Kerzen und Decken.','Nein','Beide Texte sagen: Man braucht vor allem Zeit, nicht teure Dinge.'],
+ ['Hygge ist eher etwas für den Winter.','Nein','Text A: „Hygge gibt es allerdings nicht nur im Winter.“'],
+ ['Hygge kann man auch allein erleben.','Ja','Text A (allein oder mit anderen) und Mia (Absatz 5).'],
+ ['In einer Großstadt ist Hygge kaum möglich.','Nein','Mia sagt: schwerer, aber möglich. „Ich würde trotzdem nicht aufgeben.“'],
+ ['Ordnung ist wichtiger als schöne Deko.','Ja','Mia: Ein aufgeräumtes Zuhause ist oft hyggeliger als ein perfekt dekoriertes.']];
+
+const P2Q={t:'Welcher Text ist ein Ratgeber, welcher ein persönlicher Blog?',o:['Text A ist ein Ratgeber, Text B ein Blog','Text A ist ein Blog, Text B ein Ratgeber'],k:'Text A ist ein Ratgeber, Text B ein Blog'};
+const P2M={t:'Woran erkennst du das? Mehrere Antworten sind richtig.',o:[['Die Überschrift von Text A verspricht schon Tipps.',1],['Text B ist länger.',0],['Text B ist in der Ich-Form geschrieben („für mich“).',1],['Text A hat ein Foto.',0]]};
+
+const W1A=[
+ {t:'Text A',o:['Die Dänen sind glücklich, weil sie viele Kerzen haben.','Der Text erklärt, was Hygge ist, und gibt Tipps für zu Hause.','Der Text kritisiert, dass Hygge ein Shopping-Trend ist.'],k:1,e:'c) steht nur am Ende des Textes, es ist nicht die Hauptidee.'},
+ {t:'Text B',o:['Mia erzählt, wie sie in Dänemark Möbel gekauft hat.','Mia meint, dass Hygge nur in Dänemark möglich ist.','Mia erklärt aus eigener Erfahrung, dass Hygge ein Lebensgefühl ist und man dafür nicht viel braucht.'],k:2,e:'b) ist zu stark: Mia sagt nur, dass es außerhalb von Dänemark schwerer ist.'}];
+
+const W1B=[
+ ['Die Autorin beschreibt, was sie früher über Hygge dachte.','1'],
+ ['Verschiedene Menschen erzählen, was für sie hyggelig ist.','3'],
+ ['Die Autorin gibt einen Tipp für die Wohnung.','4'],
+ ['Die Autorin vergleicht Hygge mit einem Wort aus einem anderen Land.','6'],
+ ['Die Autorin gibt zu, dass Hygge nicht überall leicht ist.','7'],
+ ['Die Autorin erklärt, wo man in Aarhus gute Kerzen kauft.','keiner']];
+
+const RF=['richtig','falsch','steht nicht im Text'];
+const W2=[
+ {t:'Für Hygge braucht man vor allem Zeit. (Text A)',k:'richtig',ev:['Am schönsten sind natürlich Kerzen oder ein Kaminfeuer.','Du brauchst eigentlich nur dich selbst und ein bisschen Zeit.','Lade Freunde zum Kochen ein.'],ek:1},
+ {t:'In hyggeligen Stunden spricht man gern über Politik. (Text A)',k:'falsch',ev:['… lange Gespräche, bei denen niemand auf die Uhr schaut.','Konzentriere dich auf den Moment.','Über Politik und andere ernste Themen spricht man in hyggeligen Stunden nicht.'],ek:2},
+ {t:'Hygge gibt es heute nur in Dänemark. (Text A)',k:'falsch',ev:['Inzwischen ist Hygge ein weltweiter Trend.','Für die Dänen ist Hygge die beste Antwort auf die kalte und dunkle Jahreszeit.','Ihr Geheimnis hat einen Namen: Hygge.'],ek:0},
+ {t:'Mia hat in Dänemark weniger gearbeitet als in Deutschland. (Text B)',k:'steht nicht im Text',e:'Mia schreibt nur, dass die Leute pünktlich nach Hause gehen. Wie viel sie selbst gearbeitet hat, steht nicht im Text.'},
+ {t:'Für eine Kollegin ist eine aufgeräumte Wohnung hyggelig. (Text B)',k:'richtig',ev:['Für die andere ist es ein heißes Bad mit Musik und Kerzen.','Ein Kollege fährt am Wochenende am liebsten ans Meer.','Für mich ist es hyggelig, wenn die Wohnung endlich aufgeräumt ist.'],ek:2},
+ {t:'Fika ist dasselbe wie Hygge. (Text B)',k:'falsch',ev:['In Schweden gibt es übrigens ein ähnliches Wort: Fika.','Fika ist konkreter als Hygge, denn es ist ein Ritual.','Man trifft sich mit Freunden oder Kollegen.'],ek:1}];
+
+const FFV=['steht im Text','folgt aus dem Text','nur eine Vermutung'];
+const W3A=[
+ ['Hygge gibt es auch im Sommer.','steht im Text','„Hygge gibt es allerdings nicht nur im Winter.“'],
+ ['Mia lebt heute wieder in Deutschland.','folgt aus dem Text','Sie hat in Dänemark gelebt (Vergangenheit) und schreibt „Und bei uns?“. Sie wohnt also nicht mehr dort.'],
+ ['Meik Wiking ist Glücksforscher.','folgt aus dem Text','Er leitet ein Institut für Glücksforschung. Das Wort „Glücksforscher“ steht aber nicht im Text.'],
+ ['Der Ratgeber möchte, dass die Leser Kerzen und Decken kaufen.','nur eine Vermutung','Der Text empfiehlt Kerzen und Decken, sagt aber nicht, dass man sie kaufen soll.'],
+ ['Mia findet die Instagram-Bilder von Hygge nicht ehrlich.','nur eine Vermutung','Mia sagt nur, dass man Hygge so von Instagram kennt. Was sie über die Bilder denkt, sagt sie nicht.']];
+
+const W3B=[
+ {t:'„<b>Ihr</b> Geheimnis hat einen Namen: Hygge.“',o:['das Geheimnis der Dänen','das Geheimnis des Winters','das Geheimnis der Deutschen'],k:0},
+ {t:'„… lange Gespräche, bei <b>denen</b> niemand auf die Uhr schaut.“',o:['bei den Freunden','bei den Gesprächen','bei den Abenden'],k:1},
+ {t:'„Da musste ich lachen, aber ich verstehe <b>sie</b> gut.“',o:['die Dänen','die Wohnung','die Kollegin mit zwei Kindern'],k:2},
+ {t:'„Fika ist konkreter als Hygge, denn <b>es</b> ist ein Ritual.“',o:['Fika','Hygge','das Wort'],k:0},
+ {t:'„<b>Das</b> reicht schon.“',o:['das ganze Leben ändern','in Dänemark wohnen','ein oder zwei Elemente in den Alltag einbauen'],k:2}];
+
+const N1O=['Ja','Nein','steht nicht im Text'];
+
+const N2=[
+ ['Hyggelig ist alles, wobei man sich wohl und {} fühlt.',['geborgen']],
+ ['Tu dir selbst etwas {}.',['Gutes']],
+ ['Man {} sich Zeit für die Menschen, die man mag.',['nimmt']],
+ ['Die Einrichtung {} natürlich eine Rolle.',['spielt']],
+ ['Versuch, ein oder zwei Elemente in deinen Alltag {}.',['einzubauen']],
+ ['… und dir jeden Tag einen kurzen Moment der Ruhe zu {}.',['gönnen']],
+ ['Dabei geht es bei Hygge nicht {} teure Dinge.',['um']],
+ ['{} Hygge also nicht mit Shopping!',['Verwechsle','verwechsel']],
+ ['Wenn du vom Sofa aus nur Chaos siehst, kannst du nicht {}.',['abschalten']]];
+
+const PZ=[
+ {t:['Obwohl','die Winter dort','länger und dunkler','sind','als in Deutschland,','gehören','die Dänen','zu den glücklichsten Menschen der Welt.'],
+  alt:['Obwohl die Winter dort länger und dunkler als in Deutschland sind, gehören die Dänen zu den glücklichsten Menschen der Welt.']},
+ {t:['Wenn','alle um dich herum','gestresst','sind,','fällt','Entspannung','nicht leicht.'],alt:[]},
+ {t:['Am liebsten','würden','sie','bis zum Frühling','unter der Bettdecke','bleiben.'],
+  alt:['Sie würden am liebsten bis zum Frühling unter der Bettdecke bleiben.','Am liebsten würden sie unter der Bettdecke bis zum Frühling bleiben.']},
+ {t:['Wenn','es danach','in der ganzen Wohnung','nach Zimt','riecht,','ist','Hygge','garantiert.'],
+  alt:['Wenn es danach nach Zimt in der ganzen Wohnung riecht, ist Hygge garantiert.']},
+ {t:['Eine Wohnung wie im Katalog','sieht','auf Fotos','vielleicht','schöner','aus.'],
+  alt:['Eine Wohnung wie im Katalog sieht vielleicht auf Fotos schöner aus.','Auf Fotos sieht eine Wohnung wie im Katalog vielleicht schöner aus.']}];
+
+const CHAT=[
+ {m:'Ich hab einen Artikel über Hygge gelesen und gestern Kerzen und eine Decke für 80 € gekauft 🙈 Aber irgendwie fühlt sich nichts anders an. Was mache ich falsch?',
+  k:'nicht kaufen · Zeit · Freunde · Moment genießen',
+  s:'Ich glaube, bei Hygge geht es nicht um …, sondern um …\nAn deiner Stelle würde ich …',
+  b:'Oh Lena 😅 Ich glaube, bei Hygge geht es nicht um Kerzen, sondern um Zeit mit Menschen, die man mag. An deiner Stelle würde ich am Wochenende ein paar Freundinnen einladen, statt noch mehr Deko zu kaufen. Die Kerzen kannst du ja trotzdem anmachen!',
+  c:['Hast du Lena einen konkreten Tipp gegeben?','Hast du gesagt, warum?']},
+ {m:'Okay 😄 Ich will trotzdem ein Buch darüber lesen. Welches würdest du mir empfehlen? Ich hab wenig Zeit und mag es praktisch.',img:'img/buecher.jpg',
+  k:'Nicole Zweig · sofort loslegen · praktischer · Meik Wiking · bekannter',
+  s:'Ich würde dir … empfehlen, weil …\nDas Buch von … ist praktischer als …',
+  b:'Ich würde dir „Mach’s dir hygge“ von Nicole Zweig empfehlen, weil es praktischer ist als die anderen. Dort gibt es Rezepte und Bastelideen, mit denen du sofort loslegen kannst. Das Buch von Meik Wiking ist zwar bekannter, aber für dich wäre es wahrscheinlich zu theoretisch.',
+  c:['Hast du ein Buch empfohlen und gesagt, warum?','Hast du zwei Bücher miteinander verglichen?']},
+ {m:'Ehrlich gesagt ist mein Hauptproblem zu Hause: Spielzeug überall, Wäsche, Chaos. Wie soll ich da entspannen? 🙄',
+  k:'aufgeräumt · hyggeliger als · kleine Ecke · Moment der Ruhe',
+  s:'Das kenne ich! Mia schreibt, dass …\nDu könntest …\nEs wäre besser, wenn …',
+  b:'Das kenne ich so gut! 😅 Mia schreibt in ihrem Blog, dass ein aufgeräumtes Zuhause oft hyggeliger ist als ein perfekt dekoriertes. Du könntest eine kleine Ecke nur für dich aufräumen, wo du dir abends einen Moment der Ruhe gönnst, wenn die Kleine schläft.',
+  c:['Hast du etwas aus dem Text benutzt?','Hast du einen Vorschlag gemacht, den Lena wirklich ausprobieren kann?']},
+ {m:'Meine schwedische Kollegin redet ständig von Fika. Ist das nicht dasselbe wie Hygge?',
+  k:'Kaffeepause · Ritual · konkreter · Lebensgefühl',
+  s:'Nicht ganz. Während Fika …, ist Hygge …\nFika ist … als Hygge.',
+  b:'Nicht ganz! Während Fika eine besondere Kaffeepause mit Freunden oder Kollegen ist, ist Hygge ein ganzes Lebensgefühl. Fika ist also konkreter als Hygge. Aber beide haben etwas gemeinsam: Man nimmt sich bewusst Zeit.',
+  c:['Hast du den Unterschied erklärt?','Hast du auch gesagt, was gleich ist?']},
+ {m:'Und du? Welcher Text hat dir besser gefallen, der Ratgeber oder der Blog?',
+  k:'persönlicher · ehrlicher · Kerzen und Bücher · realistisch',
+  s:'Mir hat … besser gefallen, weil …\nMeiner Meinung nach …\nWas mich am Ratgeber stört, ist, dass …',
+  b:'Mir hat der Blog besser gefallen, weil er persönlicher und ehrlicher ist. Meiner Meinung nach widerspricht sich der Ratgeber ein bisschen: Am Ende steht, dass es nicht um Shopping geht, aber vorher empfiehlt er Kerzen, Decken und gleich fünf Bücher. Mia sagt dagegen ganz realistisch, dass Hygge in einer stressigen Stadt schwerer ist.',
+  c:['Hast du deine Meinung klar gesagt?','Hast du sie mit einem Beispiel aus dem Text begründet?']}];
+
+/* ===== helpers ===== */
+function opts(name,list,cur,stack){
+  return `<div class="opts${stack?' stack':''}" role="group">${list.map((o,j)=>`<button data-k="${name}" data-v="${esc(o)}" aria-pressed="${cur===o}">${esc(o)}</button>`).join('')}</div>`;
+}
+function mark(ok,right,extra){
+  if(!SUB())return '';
+  return `<span class="mark${ok?' ok':''}">${ok?'✓ richtig':'→ richtig ist: '+esc(right)}${extra?'<br>'+extra:''}</span>`;
+}
+// global click handler for option buttons
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-k]');if(!b)return;
+  S.a[b.dataset.k]=b.dataset.v;save();renderAll();
+});
+
+/* ===== renderers ===== */
+function rP1(){
+  $('p1').innerHTML=THESEN.map((t,i)=>`<div class="it"><span>${i+1}. ${esc(t[0])}</span>${opts('p1_'+i,['stimme zu','stimme nicht zu'],S.a['p1_'+i])}</div>`).join('');
+}
+function p2mOk(){return P2M.o.every((o,j)=>!!S.a['p2m_'+j]===!!o[1])}
+function rP2(){
+  const q=S.a.p2q;
+  let h=`<div class="it"><span class="sub">${esc(P2Q.t)}</span>${opts('p2q',P2Q.o,q,true)}${mark(q===P2Q.k,P2Q.k)}</div>`;
+  h+=`<div class="it"><span class="sub">${esc(P2M.t)}</span><div class="opts stack">${P2M.o.map((o,j)=>`<button data-m="p2m_${j}" aria-pressed="${!!S.a['p2m_'+j]}">${esc(o[0])}</button>`).join('')}</div>`;
+  if(SUB())h+=`<span class="mark${p2mOk()?' ok':''}">${p2mOk()?'✓ richtig':'→ richtig sind: die Überschrift mit Tipps und die Ich-Form'}</span>`;
+  $('p2').innerHTML=h+'</div>';
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button[data-m]');if(!b)return;S.a[b.dataset.m]=!S.a[b.dataset.m];save();rP2()});
+
+function rW1(){
+  $('w1a').innerHTML=W1A.map((q,i)=>{const cur=S.a['w1a_'+i];const ok=cur===q.o[q.k];
+    return `<div class="it"><span class="sub">${q.t}</span>${opts('w1a_'+i,q.o,cur,true)}${mark(ok,q.o[q.k],ok?'':esc(q.e))}</div>`}).join('');
+  const choices=['1','2','3','4','5','6','7','keiner'];
+  $('w1b').innerHTML=W1B.map((q,i)=>{const cur=S.a['w1b_'+i]||'';
+    return `<div class="it"><span>${esc(q[0])}</span><div class="row"><label class="hint" for="w1b_${i}">Absatz</label><select id="w1b_${i}" data-sel="w1b_${i}"><option value="">–</option>${choices.map(c=>`<option ${cur===c?'selected':''}>${c}</option>`).join('')}</select></div>${mark(cur===q[1],q[1])}</div>`}).join('');
+}
+document.addEventListener('change',e=>{const s=e.target.closest('select[data-sel]');if(!s)return;S.a[s.dataset.sel]=s.value;save()});
+
+function w2Ok(i){const q=W2[i];if(S.a['w2_'+i]!==q.k)return false;return q.ev?S.a['w2e_'+i]===q.ev[q.ek]:true}
+function rW2(){
+  $('w2').innerHTML=W2.map((q,i)=>{const cur=S.a['w2_'+i];
+    let h=`<div class="it"><span class="sub">${i+1}. ${esc(q.t)}</span>${opts('w2_'+i,RF,cur)}`;
+    if(cur&&cur!=='steht nicht im Text'&&q.ev) h+=`<span class="hint">Welcher Satz zeigt das?</span>${opts('w2e_'+i,q.ev,S.a['w2e_'+i],true)}`;
+    if(SUB()){const ok=w2Ok(i);
+      h+=`<span class="mark${ok?' ok':''}">${ok?'✓ richtig':'→ '+esc(q.k)+(q.ev?': <span class="quote">„'+esc(q.ev[q.ek])+'“</span>':'')}${q.e&&!ok?'<br>'+esc(q.e):''}</span>`;}
+    return h+'</div>'}).join('');
+}
+function rW3(){
+  $('w3a').innerHTML=W3A.map((q,i)=>{const cur=S.a['w3a_'+i];
+    return `<div class="it"><span class="sub">${i+1}. ${esc(q[0])}</span>${opts('w3a_'+i,FFV,cur)}${SUB()?`<span class="mark${cur===q[1]?' ok':''}">${cur===q[1]?'✓ richtig':'→ '+esc(q[1])}<br>${esc(q[2])}</span>`:''}</div>`}).join('');
+  $('w3b').innerHTML=W3B.map((q,i)=>{const cur=S.a['w3b_'+i];
+    return `<div class="it"><span>${q.t}</span>${opts('w3b_'+i,q.o,cur,true)}${mark(cur===q.o[q.k],q.o[q.k])}</div>`}).join('');
+}
+function rN1(){
+  $('n1').innerHTML=THESEN.map((t,i)=>{const before=S.a['p1_'+i];const cur=S.a['n1_'+i];
+    return `<div class="it"><span class="sub">${i+1}. ${esc(t[0])}</span><span class="before">Vorher: ${before?esc(before):'keine Antwort'}</span>
+      <span class="hint">Was sagen die Texte?</span>${opts('n1_'+i,N1O,cur)}
+      <span class="hint">Und du jetzt?</span>${opts('n1m_'+i,['stimme zu','stimme nicht zu'],S.a['n1m_'+i])}
+      ${SUB()?`<span class="mark${cur===t[1]?' ok':''}">${cur===t[1]?'✓ richtig':'→ '+esc(t[1])}<br>${esc(t[2])}</span>`:''}</div>`}).join('');
+}
+function gapOk(i){return N2[i][1].some(a=>norm(S.g['n2_'+i])===norm(a))}
+function rN2(){
+  const open=!!S.closed||SUB();
+  $('n2').hidden=!open;$('closeRow').hidden=open;$('closedNote').hidden=!(S.closed&&!SUB());
+  if(!open)return;
+  $('n2').innerHTML=N2.map(([t,ans],i)=>{
+    const inp=`<input type="text" id="n2_${i}" data-gap="n2_${i}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Lücke ${i+1}" value="${esc(S.g['n2_'+i]||'')}">`;
+    const tip=S.tips[i]?`<span class="hint">Tipp: ${esc(ans[0][0])}…</span>`:`<button class="btn sm" data-tip="${i}">Tipp</button>`;
+    return `<div class="it gap"><div class="s">${i+1}. ${esc(t).replace('{}',inp)}</div><div class="row">${tip}${mark(gapOk(i),ans[0])}</div></div>`}).join('');
+}
+document.addEventListener('input',e=>{const g=e.target.closest('[data-gap]');if(!g)return;S.g[g.dataset.gap]=g.value;save()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tip]');if(!b)return;S.tips[b.dataset.tip]=1;save();rN2()});
+$('closeBtn').onclick=()=>{S.closed=1;save();rN2();updateTextButtons()};
+
+/* puzzle */
+function seededOrder(n,seed){const a=[...Array(n).keys()];let s=seed*9301+49297;for(let i=n-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  if(a.every((v,i)=>v===i)){a.push(a.shift())}return a}
+function pzOk(i){const st=S.pz[i];if(!st||st.ans.length!==PZ[i].t.length)return false;
+  const s=norm(st.ans.map(k=>PZ[i].t[k]).join(' '));
+  return [PZ[i].t.join(' '),...PZ[i].alt].some(x=>norm(x)===s)}
+function rN3(){
+  $('n3').innerHTML=PZ.map((p,i)=>{
+    const st=S.pz[i]||{ans:[]};const order=seededOrder(p.t.length,i+3);
+    const pool=order.filter(k=>!st.ans.includes(k));
+    return `<div class="it pz"><span class="hint">Satz ${i+1}</span>
+      <div class="line">${st.ans.map(k=>`<button class="tok" data-pzo="${i}" data-t="${k}">${esc(p.t[k])}</button>`).join('')}</div>
+      <div class="pool">${pool.map(k=>`<button class="tok" data-pzi="${i}" data-t="${k}">${esc(p.t[k])}</button>`).join('')}</div>
+      ${mark(pzOk(i),p.t.join(' '))}</div>`}).join('');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-pzi],[data-pzo]');if(!b)return;
+  const i=b.dataset.pzi??b.dataset.pzo;const t=+b.dataset.t;const st=S.pz[i]=S.pz[i]||{ans:[]};
+  if(b.dataset.pzi!=null)st.ans.push(t);else st.ans=st.ans.filter(x=>x!==t);
+  save();rN3();
+});
+
+/* ===== chat ===== */
+S.chat=S.chat||[];S.chatHelp=S.chatHelp||{};S.chatCmp=S.chatCmp||{};if(S.chatIdx==null)S.chatIdx=0;
+function rChat(){
+  let h='';
+  for(let i=0;i<=S.chatIdx&&i<CHAT.length;i++){
+    const c=CHAT[i];
+    h+=`<div class="bub lena">${esc(c.m)}${c.img?`<img src="${c.img}" alt="Hygge-Bücher">`:''}</div>`;
+    if(S.chat[i]){
+      h+=`<div class="bub me">${esc(S.chat[i])}</div>`;
+      if(S.chatCmp[i])h+=`<div class="reveal"><b>So könnte man antworten:</b><br>${esc(c.b)}<ul class="checklist" style="margin-top:8px">${c.c.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
+    }
+  }
+  $('chatBody').innerHTML=h;
+  const i=S.chatIdx,c=CHAT[i];let t='';
+  if(!S.chat[i]){
+    const lvl=S.chatHelp[i]||0;
+    t=`${lvl>=1?`<div class="help">${esc(c.k)}</div>`:''}${lvl>=2?`<div class="help">${esc(c.s)}</div>`:''}
+      <textarea id="chatIn" aria-label="Deine Nachricht an Lena" placeholder="Deine Nachricht …">${esc(S.chatDraft||'')}</textarea>
+      <div class="row"><button class="btn solid" id="chatSend">Senden</button>${lvl<2?`<button class="btn" id="chatHelp">Hilfe</button>`:''}</div>`;
+  }else{
+    t=`<div class="row">${S.chatCmp[i]?'':'<button class="btn" id="chatCmp">Vergleichen</button>'}${i<CHAT.length-1?'<button class="btn solid" id="chatNext">Weiter</button>':'<span class="toast">Der Chat ist fertig.</span>'}</div>`;
+  }
+  $('chatTools').innerHTML=t;
+  const inp=$('chatIn');
+  if(inp){inp.addEventListener('input',()=>{S.chatDraft=inp.value;save()});
+    $('chatSend').onclick=()=>{const v=inp.value.trim();if(!v){inp.focus();return}S.chat[i]=v;S.chatDraft='';save();rChat()};
+    const hb=$('chatHelp');if(hb)hb.onclick=()=>{S.chatHelp[i]=(S.chatHelp[i]||0)+1;save();rChat()};}
+  const cb=$('chatCmp');if(cb)cb.onclick=()=>{S.chatCmp[i]=1;save();rChat()};
+  const nb=$('chatNext');if(nb)nb.onclick=()=>{S.chatIdx++;save();rChat();const n=$('chatIn');if(n)n.focus({preventScroll:true})};
+}
+
+/* ===== text sheet ===== */
+function showTab(n){$('tabA').setAttribute('aria-selected',n==='A');$('tabB').setAttribute('aria-selected',n==='B');$('textA').hidden=n!=='A';$('textB').hidden=n!=='B'}
+$('tabA').onclick=()=>showTab('A');$('tabB').onclick=()=>showTab('B');
+function openSheet(){if(S.closed&&!SUB())return;$('sheet').hidden=false;document.body.classList.add('lock');$('closeSheet').focus()}
+function closeSheet(){$('sheet').hidden=true;document.body.classList.remove('lock')}
+document.addEventListener('click',e=>{if(e.target.closest('.open-text'))openSheet()});
+$('closeSheet').onclick=closeSheet;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheet').hidden)closeSheet()});
+function updateTextButtons(){const blocked=S.closed&&!SUB();document.querySelectorAll('.open-text').forEach(b=>{b.disabled=blocked;b.title=blocked?'Die Texte sind geschlossen':''})}
+
+/* ===== timer ===== */
+let tId=null;
+$('timerBtn').onclick=()=>{
+  if(tId){clearInterval(tId);tId=null;$('timerOut').textContent='';$('timerBtn').textContent='Timer: 4 Minuten';return}
+  let left=240;const show=()=>{$('timerOut').textContent=left>0?`${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`:'Zeit!'};
+  show();$('timerBtn').textContent='Timer stoppen';
+  tId=setInterval(()=>{left--;show();if(left<=0){clearInterval(tId);tId=null;$('timerBtn').textContent='Timer: 4 Minuten'}},1000);
+};
+
+/* ===== saved text fields ===== */
+document.querySelectorAll('[data-save]').forEach(el=>{
+  if(S[el.id]!=null)el.value=S[el.id];
+  el.addEventListener('input',()=>{S[el.id]=el.value;save()});
+});
+function wordCount(t){return (String(t||'').trim().match(/\S+/g)||[]).length}
+function wc(){$('wc').textContent=wordCount($('kommentar_txt').value)+' Wörter'}
+$('kommentar_txt').addEventListener('input',wc);
+$('checkCom').onclick=()=>{$('comCheck').hidden=false};
+
+/* ===== nav ===== */
+const sections=[...document.querySelectorAll('section.step')];
+const all=(n,f)=>[...Array(n).keys()].every(f);
+function isDone(id){
+  switch(id){
+    case 'thesen':return all(THESEN.length,i=>S.a['p1_'+i]);
+    case 'autoren':return !!S.a.p2q;
+    case 'lesen':return all(2,i=>S.a['w1a_'+i])&&all(W1B.length,i=>S.a['w1b_'+i]);
+    case 'details':return all(W2.length,i=>S.a['w2_'+i]);
+    case 'zeilen':return all(W3A.length,i=>S.a['w3a_'+i])&&all(W3B.length,i=>S.a['w3b_'+i]);
+    case 'danach':return all(THESEN.length,i=>S.a['n1_'+i]);
+    case 'ohnetext':return all(N2.length,i=>(S.g['n2_'+i]||'').trim());
+    case 'satzbau':return all(PZ.length,i=>S.pz[i]&&S.pz[i].ans.length===PZ[i].t.length);
+    case 'chat':return S.chat.filter(Boolean).length===CHAT.length;
+    case 'kommentar':return wordCount(S.kommentar_txt)>=60;
+    case 'abgeben':return SUB();
+  }
+}
+function updateNav(){$('nav').innerHTML=sections.map(s=>`<a href="#${s.id}" class="${isDone(s.id)?'done':''}">${isDone(s.id)?'✓ ':''}${s.dataset.title}</a>`).join('')}
+
+/* ===== submit ===== */
+function cnt(n,f){return [...Array(n).keys()].filter(f).length}
+function renderResults(){
+  if(!SUB()){$('results').hidden=true;return}
+  const rows=[
+    ['Zwei Texte',(S.a.p2q===P2Q.k?1:0)+(p2mOk()?1:0),2],
+    ['Worum geht es?',cnt(2,i=>S.a['w1a_'+i]===W1A[i].o[W1A[i].k])+cnt(W1B.length,i=>S.a['w1b_'+i]===W1B[i][1]),2+W1B.length],
+    ['Genau gelesen',cnt(W2.length,w2Ok),W2.length],
+    ['Zwischen den Zeilen',cnt(W3A.length,i=>S.a['w3a_'+i]===W3A[i][1])+cnt(W3B.length,i=>S.a['w3b_'+i]===W3B[i].o[W3B[i].k]),W3A.length+W3B.length],
+    ['Und jetzt?',cnt(THESEN.length,i=>S.a['n1_'+i]===THESEN[i][1]),THESEN.length],
+    ['Ohne Text',cnt(N2.length,gapOk),N2.length],
+    ['Sätze bauen',cnt(PZ.length,pzOk),PZ.length]];
+  const tot=rows.reduce((a,r)=>a+r[1],0),max=rows.reduce((a,r)=>a+r[2],0);
+  $('results').hidden=false;
+  $('results').innerHTML=`<b>Abgegeben: ${tot} von ${max} richtig.</b><div class="score" style="margin-top:8px">${rows.map(r=>`<span>${r[0]}</span><span>${r[1]} / ${r[2]}</span>`).join('')}</div><p class="hint" style="margin-top:8px">Die Lösungen stehen jetzt bei den Aufgaben. Die Texte kannst du wieder öffnen. Wenn du etwas änderst, tipp noch einmal auf „Noch einmal abgeben“.</p>`;
+  $('submitBtn').textContent='Noch einmal abgeben';
+}
+$('submitBtn').onclick=()=>{S.submitted=1;save();renderAll();$('results').scrollIntoView({block:'nearest'})};
+
+/* ===== copy comment ===== */
+$('copyBtn').onclick=()=>{
+  const txt=(S.kommentar_txt||'').trim();
+  if(!txt){$('toast').textContent='Schreib zuerst deinen Kommentar.';return}
+  const out=$('output');out.value=txt;
+  const done=()=>{$('toast').textContent='Kopiert. Jetzt im Messenger einfügen.'};
+  const fallback=()=>{out.hidden=false;out.focus();out.select();$('toast').textContent='Bitte den markierten Text kopieren.'};
+  try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+};
+
+/* ===== reset ===== */
+$('resetBtn').onclick=()=>{$('resetConfirm').hidden=false};
+$('resetNo').onclick=()=>{$('resetConfirm').hidden=true};
+$('resetYes').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){};location.reload()};
+
+function renderAll(){rP1();rP2();rW1();rW2();rW3();rN1();rN2();rN3();renderResults();updateTextButtons();updateNav()}
+renderAll();rChat();wc();
+})();
+</script>
+
+</body>
+</html>
